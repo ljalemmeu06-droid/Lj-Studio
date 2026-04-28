@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I-StudioPro LJ Abrha</title>
+    <meta name="theme-color" content="#147d73" />
+    <meta name="description" content="I-StudioPro LJ Abrha professional video studio suite." />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <div class="brand">
+          <span class="brand-mark">LJ</span>
+          <div>
+            <strong>I-StudioPro LJ Abrha</strong>
+            <span>Professional studio suite</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" type="button" data-view="record">
+            <span aria-hidden="true">REC</span>
+            Record
+          </button>
+          <button class="nav-item" type="button" data-view="edit">
+            <span aria-hidden="true">CUT</span>
+            Edit
+          </button>
+          <button class="nav-item" type="button" data-view="captions">
+            <span aria-hidden="true">CC</span>
+            Captions
+          </button>
+          <button class="nav-item" type="button" data-view="photo">
+            <span aria-hidden="true">IMG</span>
+            Photo
+          </button>
+          <button class="nav-item" type="button" data-view="export">
+            <span aria-hidden="true">DL</span>
+            Export
+          </button>
+          <button class="nav-item" type="button" data-view="assets">
+            <span aria-hidden="true">KIT</span>
+            Assets
+          </button>
+          <button class="nav-item" type="button" data-view="collab">
+            <span aria-hidden="true">NET</span>
+            Share
+          </button>
+          <button class="nav-item" type="button" data-view="suite">
+            <span aria-hidden="true">PRO</span>
+            Suite
+          </button>
+          <button class="nav-item" type="button" data-view="install">
+            <span aria-hidden="true">APP</span>
+            Install
+          </button>
+        </nav>
+
+        <section class="setup-panel">
+          <h2>Inputs</h2>
+          <label class="toggle-row">
+            <input id="screenToggle" type="checkbox" checked />
+            <span>Screen</span>
+          </label>
+          <label class="toggle-row">
+            <input id="webcamToggle" type="checkbox" checked />
+            <span>Webcam</span>
+          </label>
+          <label class="toggle-row">
+            <input id="slidesToggle" type="checkbox" checked />
+            <span>Slides</span>
+          </label>
+          <label class="toggle-row">
+            <input id="micToggle" type="checkbox" checked />
+            <span>Microphone</span>
+          </label>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Professional video creation</p>
+            <h1>I-StudioPro LJ Abrha for recording, editing, color, audio, effects, and delivery.</h1>
+          </div>
+          <div class="topbar-actions">
+            <label class="language-field">
+              <span>Language</span>
+              <select id="languageSelect" aria-label="Preferred language"></select>
+            </label>
+            <button id="undoButton" class="ghost-button" type="button">Undo</button>
+            <button id="redoButton" class="ghost-button" type="button">Redo</button>
+            <button id="saveProject" class="ghost-button" type="button">Save project</button>
+            <label class="ghost-button import-button">
+              Load project
+              <input id="loadProject" type="file" accept=".studiopro,application/json" />
+            </label>
+            <button id="quickSetup" class="ghost-button" type="button">Auto setup</button>
+            <button id="recordButton" class="primary-button" type="button">Start recording</button>
+          </div>
+        </header>
+
+        <section class="view active" id="recordView" data-view-panel="record">
+          <div class="stage-grid">
+            <section class="preview-area" aria-label="Recording preview">
+              <div class="preview-toolbar">
+                <div class="status-pill">
+                  <span id="recordDot"></span>
+                  <span id="recordStatus">Ready</span>
+                </div>
+                <span id="recordTime">00:00</span>
+              </div>
+              <canvas id="mixCanvas" width="1280" height="720"></canvas>
+              <video id="screenVideo" muted playsinline></video>
+              <video id="webcamVideo" muted playsinline></video>
+            </section>
+
+            <aside class="control-column">
+              <section class="panel">
+                <h2>Permission flow</h2>
+                <div class="permission-list">
+                  <span id="permScreen">Screen waiting</span>
+                  <span id="permCamera">Camera waiting</span>
+                  <span id="permMic">Mic waiting</span>
+                </div>
+              </section>
+
+              <section class="panel">
+                <h2>Scene layout</h2>
+                <div class="segmented" role="group" aria-label="Scene layout">
+                  <button class="segment active" type="button" data-layout="spotlight">Spotlight</button>
+                  <button class="segment" type="button" data-layout="sideBySide">Side by side</button>
+                  <button class="segment" type="button" data-layout="slidesFirst">Slides first</button>
+                </div>
+                <label class="field">
+                  Webcam size
+                  <input id="webcamSize" type="range" min="16" max="34" value="24" />
+                </label>
+                <label class="field">
+                  Caption style
+                  <select id="captionStyle">
+                    <option value="lower">Lower third</option>
+                    <option value="bar">Clean bar</option>
+                    <option value="none">Hidden</option>
+                  </select>
+                </label>
+              </section>
+
+              <section class="panel">
+                <h2>Slides</h2>
+                <label class="file-drop">
+                  <input id="slideInput" type="file" accept="image/*" multiple />
+                  <span>Add slide images</span>
+                </label>
+                <div id="slideList" class="slide-list" aria-live="polite"></div>
+                <div class="inline-actions">
+                  <button id="prevSlide" class="icon-button" type="button" title="Previous slide">&lt;</button>
+                  <span id="slideCount">No slides</span>
+                  <button id="nextSlide" class="icon-button" type="button" title="Next slide">&gt;</button>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="editView" data-view-panel="edit">
+          <div class="editor-layout pro-editor">
+            <section class="panel playback-panel">
+              <div class="section-heading">
+                <h2>Timeline editor</h2>
+                <button id="playTimeline" class="primary-button small" type="button">Play timeline</button>
+              </div>
+              <video id="playback" controls></video>
+              <canvas id="editCanvas" width="1280" height="720"></canvas>
+              <video id="sourceVideo" muted playsinline></video>
+              <audio id="sourceAudio"></audio>
+              <div class="edit-tools">
+                <label class="ghost-button small import-button">
+                  Import media
+                  <input id="assetInput" type="file" accept="video/*,audio/*,image/*" multiple />
+                </label>
+                <label class="ghost-button small import-button">
+                  Relink media
+                  <input id="relinkInput" type="file" accept="video/*,audio/*,image/*" multiple />
+                </label>
+                <button id="markIn" class="ghost-button" type="button">Mark in</button>
+                <button id="markOut" class="ghost-button" type="button">Mark out</button>
+                <button id="addCut" class="primary-button small" type="button">Keep range</button>
+                <button id="splitClip" class="ghost-button small" type="button">Split</button>
+              </div>
+            </section>
+            <section class="panel timeline-panel">
+              <div class="section-heading">
+                <h2>Multi-track timeline</h2>
+                <button id="clearCuts" class="ghost-button small" type="button">Clear</button>
+              </div>
+              <div class="timeline-ruler">
+                <span>0s</span>
+                <span>15s</span>
+                <span>30s</span>
+                <span>45s</span>
+                <span>60s</span>
+              </div>
+              <div id="timeline" class="timeline multitrack" aria-label="Editable timeline"></div>
+              <div id="cutList" class="cut-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Transitions</h2>
+              <div class="transition-grid">
+                <button class="transition active" type="button" data-transition="Fade">Fade</button>
+                <button class="transition" type="button" data-transition="Slide">Slide</button>
+                <button class="transition" type="button" data-transition="Dip">Dip</button>
+                <button class="transition" type="button" data-transition="None">None</button>
+              </div>
+              <label class="field">
+                Transition length
+                <input id="transitionLength" type="range" min="0" max="3" value="1" step="0.1" />
+              </label>
+            </section>
+            <section class="panel inspector-panel">
+              <h2>Clip inspector</h2>
+              <p id="selectedClipName" class="muted-copy">Select a timeline clip.</p>
+              <div class="inspector-grid">
+                <label class="field">
+                  Start
+                  <input id="clipStart" type="number" min="0" step="0.1" />
+                </label>
+                <label class="field">
+                  Trim in
+                  <input id="clipTrimIn" type="number" min="0" step="0.1" />
+                </label>
+                <label class="field">
+                  Trim out
+                  <input id="clipTrimOut" type="number" min="0" step="0.1" />
+                </label>
+                <label class="field">
+                  Volume
+                  <input id="clipVolume" type="range" min="0" max="1.5" step="0.05" value="1" />
+                </label>
+                <label class="toggle-row">
+                  <input id="clipMute" type="checkbox" />
+                  <span>Mute</span>
+                </label>
+                <label class="field">
+                  Fade in
+                  <input id="clipFadeIn" type="range" min="0" max="5" step="0.1" value="0" />
+                </label>
+                <label class="field">
+                  Fade out
+                  <input id="clipFadeOut" type="range" min="0" max="5" step="0.1" value="0" />
+                </label>
+                <label class="toggle-row">
+                  <input id="clipNoise" type="checkbox" />
+                  <span>Noise reduction</span>
+                </label>
+                <label class="field">
+                  Crop
+                  <select id="clipCrop">
+                    <option value="fit">Fit</option>
+                    <option value="fill">Fill</option>
+                    <option value="square">Square</option>
+                    <option value="portrait">Portrait</option>
+                  </select>
+                </label>
+                <label class="field">
+                  Font size
+                  <input id="textSize" type="number" min="12" max="96" step="1" />
+                </label>
+                <label class="field">
+                  Text color
+                  <input id="textColor" type="color" />
+                </label>
+                <label class="field">
+                  Fill color
+                  <input id="fillColor" type="color" />
+                </label>
+                <label class="field">
+                  Align
+                  <select id="textAlign">
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
+                </label>
+                <label class="toggle-row">
+                  <input id="textBold" type="checkbox" />
+                  <span>Bold text</span>
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="addTextOverlay" class="ghost-button small" type="button">Text</button>
+                <button id="addLowerThird" class="ghost-button small" type="button">Lower third</button>
+                <button id="addLogo" class="ghost-button small" type="button">Logo</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Motion and cursor</h2>
+              <div class="inspector-grid">
+                <label class="field">
+                  Keyframe time
+                  <input id="keyframeTime" type="number" min="0" step="0.1" value="0" />
+                </label>
+                <label class="field">
+                  Zoom
+                  <input id="keyframeZoom" type="range" min="1" max="3" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Pan X
+                  <input id="keyframePanX" type="number" step="1" value="0" />
+                </label>
+                <label class="field">
+                  Pan Y
+                  <input id="keyframePanY" type="number" step="1" value="0" />
+                </label>
+                <label class="toggle-row">
+                  <input id="cursorHighlight" type="checkbox" />
+                  <span>Cursor highlight</span>
+                </label>
+                <label class="toggle-row">
+                  <input id="clickRipple" type="checkbox" />
+                  <span>Click ripple</span>
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="addKeyframe" class="primary-button small" type="button">Add keyframe</button>
+                <button id="addClickEffect" class="ghost-button small" type="button">Add click effect</button>
+              </div>
+            </section>
+            <section class="panel waveform-panel">
+              <div class="section-heading">
+                <h2>Audio waveform</h2>
+                <button id="normalizeAudio" class="ghost-button small" type="button">Normalize</button>
+              </div>
+              <canvas id="waveformCanvas" width="900" height="160"></canvas>
+              <div class="edit-tools">
+                <button id="silenceWaveform" class="ghost-button small" type="button">Silence selection</button>
+                <button id="boostWaveform" class="ghost-button small" type="button">Boost selection</button>
+                <button id="fadeWaveform" class="ghost-button small" type="button">Fade selection</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Deep effects</h2>
+              <div class="inspector-grid">
+                <label class="toggle-row">
+                  <input id="enableChromaKey" type="checkbox" />
+                  <span>Chroma key</span>
+                </label>
+                <label class="field">
+                  Key color
+                  <input id="chromaColor" type="color" value="#00ff00" />
+                </label>
+                <label class="toggle-row">
+                  <input id="enableMask" type="checkbox" />
+                  <span>Ellipse mask</span>
+                </label>
+                <label class="toggle-row">
+                  <input id="enableStabilize" type="checkbox" />
+                  <span>Stabilize</span>
+                </label>
+                <label class="field">
+                  Speed
+                  <input id="speedRamp" type="range" min="0.25" max="3" step="0.05" value="1" />
+                </label>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="captionsView" data-view-panel="captions">
+          <div class="caption-layout">
+            <section class="panel">
+              <h2>Caption builder</h2>
+              <textarea id="captionText" rows="8">Welcome to the session. Today we are walking through the product, the process, and the final next steps.</textarea>
+              <div class="caption-time-grid">
+                <label class="field">
+                  Start
+                  <input id="captionStart" type="number" min="0" step="0.1" value="0" />
+                </label>
+                <label class="field">
+                  Duration
+                  <input id="captionDuration" type="number" min="0.5" step="0.1" value="4" />
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="splitCaptions" class="primary-button small" type="button">Generate caption blocks</button>
+                <button id="applyCaption" class="ghost-button small" type="button">Apply to preview</button>
+                <button id="addTimedCaption" class="ghost-button small" type="button">Add timed caption</button>
+                <button id="aiCaptionButton" class="ghost-button small" type="button">AI auto-time</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Caption blocks</h2>
+              <div id="captionBlocks" class="caption-blocks"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="exportView" data-view-panel="export">
+          <div class="export-grid">
+            <section class="panel">
+              <h2>Export settings</h2>
+              <label class="field">
+                Format
+                <select id="formatSelect">
+                  <option value="webm">WebM 1080p</option>
+                  <option value="mp4">MP4 if browser supports it</option>
+                  <option value="social">Social clip WebM</option>
+                </select>
+              </label>
+              <label class="field">
+                Quality
+                <input id="qualityRange" type="range" min="60" max="100" value="92" />
+              </label>
+              <button id="downloadButton" class="primary-button" type="button" disabled>Export selected timeline</button>
+              <button id="cancelExport" class="ghost-button" type="button" disabled>Cancel export</button>
+              <progress id="exportProgress" max="100" value="0"></progress>
+              <p id="exportNote" class="muted-copy">Export uses the selected timeline ranges, overlays, volume, fades, and crop settings.</p>
+            </section>
+            <section class="panel publish-card">
+              <h2>Project checklist</h2>
+              <ul class="checklist">
+                <li id="checkRecord">Record a take</li>
+                <li id="checkCuts">Add edits or cuts</li>
+                <li id="checkCaptions">Review captions</li>
+                <li id="checkExport">Export final video</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="photoView" data-view-panel="photo">
+          <div class="photo-studio-grid">
+            <section class="panel photo-canvas-panel">
+              <div class="section-heading">
+                <h2>Photo Studio</h2>
+                <div class="edit-tools">
+                  <label class="ghost-button small import-button">
+                    Import photo
+                    <input id="photoInput" type="file" accept="image/*" />
+                  </label>
+                  <button id="downloadPhoto" class="primary-button small" type="button">Export image</button>
+                </div>
+              </div>
+              <canvas id="photoCanvas" width="1280" height="720"></canvas>
+            </section>
+            <section class="panel">
+              <h2>Adjustments</h2>
+              <div class="inspector-grid">
+                <label class="field">
+                  Brightness
+                  <input id="photoBrightness" type="range" min="0" max="2" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Contrast
+                  <input id="photoContrast" type="range" min="0" max="2" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Saturation
+                  <input id="photoSaturation" type="range" min="0" max="2" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Blur
+                  <input id="photoBlur" type="range" min="0" max="12" step="1" value="0" />
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="photoGrayscale" class="ghost-button small" type="button">Grayscale</button>
+                <button id="photoSepia" class="ghost-button small" type="button">Sepia</button>
+                <button id="photoReset" class="ghost-button small" type="button">Reset</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Tools</h2>
+              <div class="transition-grid">
+                <button class="photo-tool active" type="button" data-photo-tool="select">Select</button>
+                <button class="photo-tool" type="button" data-photo-tool="draw">Draw</button>
+                <button class="photo-tool" type="button" data-photo-tool="text">Text</button>
+                <button class="photo-tool" type="button" data-photo-tool="crop">Crop</button>
+              </div>
+              <div class="inspector-grid">
+                <label class="field">
+                  Brush color
+                  <input id="photoBrushColor" type="color" value="#e65f4f" />
+                </label>
+                <label class="field">
+                  Brush size
+                  <input id="photoBrushSize" type="range" min="2" max="40" step="1" value="8" />
+                </label>
+                <label class="field">
+                  Text
+                  <input id="photoText" type="text" value="I-StudioPro" />
+                </label>
+                <label class="field">
+                  Format
+                  <select id="photoFormat">
+                    <option value="image/png">PNG</option>
+                    <option value="image/jpeg">JPEG</option>
+                    <option value="image/webp">WebP</option>
+                  </select>
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="rotatePhoto" class="ghost-button small" type="button">Rotate</button>
+                <button id="flipPhoto" class="ghost-button small" type="button">Flip</button>
+                <button id="cropPhoto" class="ghost-button small" type="button">Apply crop</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Purpose presets</h2>
+              <div id="photoPresets" class="asset-grid"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="assetsView" data-view-panel="assets">
+          <div class="asset-workspace">
+            <section class="panel">
+              <h2>Professional templates</h2>
+              <div id="templateLibrary" class="asset-grid"></div>
+            </section>
+            <section class="panel">
+              <h2>Asset library</h2>
+              <div class="edit-tools">
+                <input id="marketplaceSearch" type="text" placeholder="Search free marketplace" />
+                <button id="searchMarketplace" class="ghost-button small" type="button">Search</button>
+              </div>
+              <div id="assetLibrary" class="asset-grid"></div>
+              <div class="edit-tools">
+                <button id="uploadMarketplaceAsset" class="primary-button small" type="button">Upload free asset</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Performance engine</h2>
+              <div id="engineStatus" class="engine-list"></div>
+            </section>
+            <section class="panel">
+              <h2>Production QA</h2>
+              <div id="qaStatus" class="engine-list"></div>
+              <div class="edit-tools">
+                <button id="runQaCheck" class="primary-button small" type="button">Run codec QA</button>
+                <button id="stressTimeline" class="ghost-button small" type="button">Long-project stress</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="collabView" data-view-panel="collab">
+          <div class="export-grid">
+            <section class="panel">
+              <h2>Account</h2>
+              <label class="field">
+                Email
+                <input id="accountEmail" type="email" value="creator@studiopro.local" />
+              </label>
+              <label class="field">
+                Password
+                <input id="accountPassword" type="password" value="studio-demo" />
+              </label>
+              <div class="edit-tools">
+                <button id="createAccount" class="primary-button small" type="button">Create account</button>
+                <button id="loginAccount" class="ghost-button small" type="button">Log in</button>
+                <button id="resetPassword" class="ghost-button small" type="button">Reset password</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Teams and permissions</h2>
+              <label class="field">
+                Team
+                <input id="teamName" type="text" value="default" />
+              </label>
+              <label class="field">
+                Member email
+                <input id="teamMemberEmail" type="email" value="editor@studiopro.local" />
+              </label>
+              <label class="field">
+                Role
+                <select id="teamRole">
+                  <option value="owner">Owner</option>
+                  <option value="editor">Editor</option>
+                  <option value="commenter">Commenter</option>
+                  <option value="viewer">Viewer</option>
+                </select>
+              </label>
+              <button id="addTeamMember" class="primary-button small" type="button">Add member</button>
+            </section>
+            <section class="panel">
+              <h2>Cloud sharing</h2>
+              <label class="field">
+                Share endpoint
+                <input id="shareEndpoint" type="text" value="http://127.0.0.1:4174/api/share-project" />
+              </label>
+              <div class="edit-tools">
+                <button id="createShareLink" class="primary-button" type="button">Create share package</button>
+                <button id="copyShareLink" class="ghost-button" type="button">Copy link</button>
+                <button id="syncProject" class="ghost-button" type="button">Sync now</button>
+              </div>
+              <p id="shareStatus" class="muted-copy">Creates a portable project package locally, with a backend hook for real team cloud sync.</p>
+            </section>
+            <section class="panel">
+              <h2>Collaboration</h2>
+              <label class="field">
+                Comment
+                <input id="commentBody" type="text" value="Review this timeline section" />
+              </label>
+              <button id="addComment" class="ghost-button small" type="button">Add comment</button>
+              <div id="collabActivity" class="caption-blocks"></div>
+            </section>
+            <section class="panel">
+              <h2>Audit and revisions</h2>
+              <div class="edit-tools">
+                <button id="loadAudit" class="ghost-button small" type="button">Load audit</button>
+                <button id="loadRevisions" class="ghost-button small" type="button">Load revisions</button>
+              </div>
+              <div id="auditLog" class="caption-blocks"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="suiteView" data-view-panel="suite">
+          <div class="suite-grid">
+            <section class="panel">
+              <h2>Pro workspaces</h2>
+              <div id="workspaceMatrix" class="module-grid"></div>
+            </section>
+            <section class="panel">
+              <h2>Color and scopes</h2>
+              <div class="inspector-grid">
+                <label class="field">
+                  Exposure
+                  <input id="colorExposure" type="range" min="-2" max="2" step="0.05" value="0" />
+                </label>
+                <label class="field">
+                  Contrast
+                  <input id="colorContrast" type="range" min="0" max="2" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Saturation
+                  <input id="colorSaturation" type="range" min="0" max="2" step="0.05" value="1" />
+                </label>
+                <label class="field">
+                  Temperature
+                  <input id="colorTemperature" type="range" min="-100" max="100" step="1" value="0" />
+                </label>
+              </div>
+              <canvas id="scopeCanvas" width="640" height="220"></canvas>
+              <div class="edit-tools">
+                <label class="ghost-button small import-button">
+                  Import LUT
+                  <input id="lutInput" type="file" accept=".cube,.3dl,.look" />
+                </label>
+                <button id="addColorNode" class="ghost-button small" type="button">Add node</button>
+                <button id="addQualifier" class="ghost-button small" type="button">Qualifier</button>
+                <button id="enableHdr" class="ghost-button small" type="button">HDR mode</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Effects and finishing</h2>
+              <div id="effectsRack" class="asset-grid"></div>
+            </section>
+            <section class="panel">
+              <h2>Audio mastering</h2>
+              <div class="inspector-grid">
+                <label class="field">
+                  Compressor
+                  <input id="masterCompressor" type="range" min="0" max="1" step="0.05" value="0.25" />
+                </label>
+                <label class="field">
+                  Loudness LUFS
+                  <input id="masterLufs" type="number" min="-24" max="-6" step="1" value="-14" />
+                </label>
+                <label class="field">
+                  EQ low
+                  <input id="eqLow" type="range" min="-12" max="12" step="1" value="0" />
+                </label>
+                <label class="field">
+                  EQ high
+                  <input id="eqHigh" type="range" min="-12" max="12" step="1" value="0" />
+                </label>
+              </div>
+              <div class="edit-tools">
+                <button id="analyzeLoudness" class="ghost-button small" type="button">Analyze loudness</button>
+                <button id="noiseRepair" class="ghost-button small" type="button">Noise repair</button>
+                <button id="addAudioBus" class="ghost-button small" type="button">Add bus</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Render queue</h2>
+              <div id="renderQueue" class="caption-blocks"></div>
+              <div class="edit-tools">
+                <button id="addRenderJob" class="primary-button small" type="button">Add render job</button>
+                <button id="clearRenderQueue" class="ghost-button small" type="button">Clear queue</button>
+                <button id="packageApp" class="ghost-button small" type="button">Package app</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Production modules</h2>
+              <div id="productionModules" class="engine-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="installView" data-view-panel="install">
+          <div class="suite-grid">
+            <section class="panel">
+              <h2>Install on this device</h2>
+              <p id="installStatus" class="muted-copy">Install support is checked when the app loads.</p>
+              <div class="edit-tools">
+                <button id="installApp" class="primary-button" type="button">Install app</button>
+                <button id="openOffline" class="ghost-button" type="button">Enable offline launch</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Free subscription notifications</h2>
+              <p id="subscriptionNoticeStatus" class="muted-copy">Free access is approved for all users. Enable notifications to receive a 6-month renewal reminder.</p>
+              <div class="edit-tools">
+                <button id="enableSubscriptionNotifications" class="primary-button small" type="button">Enable renewal notifications</button>
+                <button id="testSubscriptionNotification" class="ghost-button small" type="button">Send test notice</button>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Phone and tablet setup</h2>
+              <div class="engine-list">
+                <span>Android Chrome: open this URL, tap menu, then Install app.</span>
+                <span>iPhone/iPad Safari: tap Share, then Add to Home Screen.</span>
+                <span>Tablet editing: touch drag is enabled on canvas clips and timeline clips.</span>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>PC and desktop setup</h2>
+              <div class="engine-list">
+                <span>Windows/Edge/Chrome: use Install app from the address bar or this page.</span>
+                <span>Mac/Linux Chrome: install as a desktop PWA from the browser menu.</span>
+                <span>Portable package: use Package app in the Suite render queue.</span>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>Device readiness</h2>
+              <div id="installReadiness" class="engine-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="subscriptionModal" class="subscription-modal" role="dialog" aria-modal="true" aria-labelledby="subscriptionTitle">
+      <div class="subscription-dialog">
+        <p class="eyebrow">Free subscription</p>
+        <h2 id="subscriptionTitle">Renew I-StudioPro LJ Abrha for free</h2>
+        <p id="subscriptionMessage" class="muted-copy">Your free access renews every 6 months. Confirm to keep using all studio tools at no cost.</p>
+        <label class="field">
+          Email
+          <input id="subscriptionEmail" type="email" value="creator@studiopro.local" autocomplete="email" />
+        </label>
+        <label class="toggle-row subscription-check">
+          <input id="subscriptionAgree" type="checkbox" />
+          <span>I understand this is a free 6-month renewal.</span>
+        </label>
+        <div class="edit-tools">
+          <button id="renewSubscription" class="primary-button" type="button">Renew free subscription</button>
+          <button id="remindSubscription" class="ghost-button" type="button">Remind me later</button>
+        </div>
+        <p id="subscriptionStatus" class="muted-copy"></p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
