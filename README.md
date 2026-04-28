@@ -38,6 +38,22 @@ powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1
 
 The installer ZIP will be created in `dist/`.
 
+## Mobile support
+
+Lj-Studio includes PWA files and Capacitor configuration for Android/iOS packaging.
+
+See `docs/MOBILE_PACKAGING.md`.
+
+GitHub Actions workflow:
+
+- `.github/workflows/mobile-build.yml`
+
+This workflow can produce:
+
+- PWA files
+- Android debug APK for testing
+- iOS Xcode project for signing/building on Apple tooling
+
 ## Code signing
 
 The open-source signing path is documented in `OPEN_SOURCE_SIGNING_PATH.md`.

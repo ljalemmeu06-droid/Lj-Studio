@@ -547,17 +547,17 @@ async function sendSubscriptionNotification(title, body) {
       await registration.showNotification(title, {
         body,
         tag: "i-studiopro-free-subscription",
-        icon: "/icons/icon.svg",
-        badge: "/icons/icon.svg",
+        icon: "icons/icon.svg",
+        badge: "icons/icon.svg",
         data: { url: location.origin },
       });
       return true;
     } catch {
-      new Notification(title, { body, icon: "/icons/icon.svg" });
+      new Notification(title, { body, icon: "icons/icon.svg" });
       return true;
     }
   }
-  new Notification(title, { body, icon: "/icons/icon.svg" });
+  new Notification(title, { body, icon: "icons/icon.svg" });
   return true;
 }
 
@@ -898,7 +898,7 @@ async function registerServiceWorker() {
     return;
   }
   try {
-    await navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.register("sw.js");
     els.installStatus.textContent = "Offline launch is enabled for the app shell.";
   } catch {
     els.installStatus.textContent = "Offline launch needs localhost or HTTPS browser support.";

@@ -1,0 +1,25 @@
+{
+  "name": "lj-studio",
+  "version": "0.1.0",
+  "description": "Open-source local video and photo studio app.",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build:web": "node scripts/copy-web.mjs",
+    "cap:add:android": "npm run build:web && npx cap add android",
+    "cap:add:ios": "npm run build:web && npx cap add ios",
+    "cap:sync": "npm run build:web && npx cap sync",
+    "build:android:debug": "npm run build:web && npx cap add android && cd android && ./gradlew assembleDebug",
+    "prepare:ios": "npm run build:web && npx cap add ios",
+    "cap:open:android": "npx cap open android",
+    "cap:open:ios": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0"
+  }
+}

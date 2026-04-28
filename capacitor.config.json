@@ -1,0 +1,8 @@
+{
+  "appId": "com.ljabrha.ljstudio",
+  "appName": "Lj-Studio",
+  "webDir": "mobile-web",
+  "server": {
+    "androidScheme": "https"
+  }
+}
